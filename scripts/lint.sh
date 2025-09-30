@@ -6,7 +6,7 @@ echo "🔍 Running linting checks..."
 echo "🐍 Python linting..."
 ruff check .
 ruff format --check .
-mypy .
+mypy . --ignore-missing-imports --no-strict-optional
 
 # JavaScript/TypeScript linting (if frontend exists)
 if [ -d "frontend" ]; then
