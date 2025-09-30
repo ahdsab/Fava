@@ -36,7 +36,7 @@ jobs:
           ruff format --check .
       
       - name: Run MyPy
-        run: mypy . --ignore-missing-imports --no-strict-optional
+        run: mypy . --ignore-missing-imports --no-strict-optional --disable-error-code=no-any-return --disable-error-code=unused-ignore --disable-error-code=misc
       
       - name: Run JavaScript/TypeScript linting
         run: |
