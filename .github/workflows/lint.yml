@@ -27,7 +27,7 @@ jobs:
       - name: Install Node.js tools
         run: |
           cd frontend
-          npm ci
+          npm install
       
       - name: Run Python linting
         run: |
