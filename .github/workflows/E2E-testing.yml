@@ -148,33 +148,75 @@ jobs:
           path: allure-results-ui/
           retention-days: 30 
     
-  allure-report:
-    runs-on: ubuntu-latest
+  publish-allure:
+    runs-on: ubuntu-22.04
     needs: [api-tests, ui-tests]
     if: always()
-
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      IMAGE_TAG: ${{ env.FAVA_IMAGE_TAG }}
+      FAVA_URL: http://${{ secrets.FAVA_EC2_HOST_IP }}:5001/
+      TEST_ENVIRONMENT: ${{ github.event_name == 'pull_request' && format('PR-{0}', github.event.pull_request.number) || format('{0}', github.event.inputs.environment || 'Manual') }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download all Allure results
+      - name: Download API Allure results
         uses: actions/download-artifact@v4
         with:
-          pattern: allure-results-*
-          path: allure-results
-          merge-multiple: true
+          name: allure-results-api
+          path: allure-download/api
+        continue-on-error: true
 
-      - name: Generate and Deploy Allure Report
-        uses: simple-elf/allure-report-action@master
+      - name: Download UI Allure results
+        uses: actions/download-artifact@v4
         with:
-          allure_results: allure-results
-          allure_report: allure-report
-          gh_pages: gh-pages
-          allure_history: allure-history
-          keep_reports: 20
+          name: allure-results-ui
+          path: allure-download/ui
+        continue-on-error: true
+
+      - name: Merge results and add environment.properties
+        run: |
+          mkdir -p allure-results
+          if [ -d "allure-download/api" ]; then
+            cp -r allure-download/api/* allure-results/ 2>/dev/null || true
+          fi
+          if [ -d "allure-download/ui" ]; then
+            cp -r allure-download/ui/* allure-results/ 2>/dev/null || true
+          fi
+          cat > allure-results/environment.properties <<EOF
+          Environment=${{ env.TEST_ENVIRONMENT }}
+          Image.Tag=${{ env.IMAGE_TAG }}
+          Fava.URL=${{ env.FAVA_URL }}
+          GitHub.Run.ID=${{ github.run_id }}
+          GitHub.Actor=${{ github.actor }}
+          Workflow.Trigger=${{ github.event_name }}
+          Branch=${{ github.head_ref || github.ref_name }}
+          Commit.SHA=${{ github.sha }}
+          Repository=${{ github.repository }}
+          Timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          EOF
+
+      - name: Setup Allure
+        run: |
+          npm install -g allure-commandline
+          allure --version
+
+      - name: Generate Allure report
+        run: |
+          allure generate allure-results --clean -o _site
+          touch _site/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.TESTING_GITHUB_TOKEN }}
-          publish_dir: allure-history
+        id: deployment
+        uses: actions/deploy-pages@v4
