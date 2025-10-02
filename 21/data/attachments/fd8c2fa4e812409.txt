@@ -1,0 +1,1 @@
+test_add_transaction_special_characters: API POST not supported (expected). Status: 404

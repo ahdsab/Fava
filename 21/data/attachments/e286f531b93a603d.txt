@@ -1,0 +1,1 @@
+test_add_valid_transaction: API POST not supported (expected). Status: 404

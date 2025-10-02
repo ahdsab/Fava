@@ -1,0 +1,18 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1452","test_journal_range","","Thu Oct 02 10:37:50 UTC 2025","passed","Thu Oct 02 10:37:51 UTC 2025","TestFavaSimpleGET","test_fava_GET_endpoints","",""
+"
+        Test Steps:
+        - Navigate to Query page.
+        - Enter BQL query.
+        - Submit query.
+        - Assert at least one result row exists.
+        ","12071","test_run_query_from_income_statement","","Thu Oct 02 10:38:06 UTC 2025","passed","Thu Oct 02 10:38:18 UTC 2025","TestRunBQLFromIncomeStatement","test_query_send","",""
+"","280","test_payee_accounts","","Thu Oct 02 10:37:52 UTC 2025","passed","Thu Oct 02 10:37:52 UTC 2025","TestFavaSimpleGET","test_fava_GET_endpoints","",""
+"Try to add transaction with special characters (should fail)","282","test_add_transaction_special_characters","","Thu Oct 02 10:37:49 UTC 2025","passed","Thu Oct 02 10:37:49 UTC 2025","TestAddTransactionAPI","test_api_add_transaction","",""
+"Try to add transaction missing narration (should fail)","281","test_add_transaction_missing_narration","","Thu Oct 02 10:37:49 UTC 2025","passed","Thu Oct 02 10:37:49 UTC 2025","TestAddTransactionAPI","test_api_add_transaction","",""
+"","276","test_narrations","","Thu Oct 02 10:37:51 UTC 2025","passed","Thu Oct 02 10:37:51 UTC 2025","TestFavaSimpleGET","test_fava_GET_endpoints","",""
+"Try to add a valid transaction via API (should fail)","280","test_add_valid_transaction","","Thu Oct 02 10:37:49 UTC 2025","passed","Thu Oct 02 10:37:50 UTC 2025","TestAddTransactionAPI","test_api_add_transaction","",""
+"","276","test_options","","Thu Oct 02 10:37:51 UTC 2025","passed","Thu Oct 02 10:37:52 UTC 2025","TestFavaSimpleGET","test_fava_GET_endpoints","",""
+"Try to add transaction with mismatched amounts (should fail)","281","test_add_transaction_mismatched_amounts","","Thu Oct 02 10:37:49 UTC 2025","passed","Thu Oct 02 10:37:49 UTC 2025","TestAddTransactionAPI","test_api_add_transaction","",""
+"Try to add transaction with invalid date (should fail)","282","test_add_transaction_invalid_date","","Thu Oct 02 10:37:48 UTC 2025","passed","Thu Oct 02 10:37:49 UTC 2025","TestAddTransactionAPI","test_api_add_transaction","",""
+"","332","test_query_balance_assets","","Thu Oct 02 10:37:52 UTC 2025","passed","Thu Oct 02 10:37:52 UTC 2025","TestFavaSimpleGET","test_fava_GET_endpoints","",""
