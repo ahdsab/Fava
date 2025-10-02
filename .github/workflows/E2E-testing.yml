@@ -159,7 +159,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     env:
-      IMAGE_TAG: ${{ env.FAVA_IMAGE_TAG }}
+      IMAGE_TAG: ${{ needs.deploy.outputs.Fava_image_tag }}
       FAVA_URL: http://${{ secrets.FAVA_EC2_HOST_IP }}:5001/
       TEST_ENVIRONMENT: ${{ github.event_name == 'pull_request' && format('PR-{0}', github.event.pull_request.number) || format('{0}', github.event.inputs.environment || 'Manual') }}
     steps:
